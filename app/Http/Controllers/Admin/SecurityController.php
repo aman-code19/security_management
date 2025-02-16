@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Security;
+use App\Models\SecurityGuard;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class SecurityController extends Controller
+{
+    public function create(){
+        return view('admin.security.form');
+    }
+
+    public function store(Request $request){
+        
+        // dd($request->all());
+        $request->validate([
+        'name' => 'required', 
+        'email' => 'required', 
+        'phone' => ['required', 'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/'], 
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'address' => 'required', 
+        ]);
+
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('images'), $imageName);
+        $data = array(
+           
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+             'phone' => $request->input('phone'),
+            'image' => $imageName,
+            'address' => $request->input('address'),
+            
+                
+        );
+        SecurityGuard::create($data);
+        return redirect()->route('securityTable');
+        // $modelInstance = new Placement(); 
+        // $modelInstance->name = $request->input('name'); 
+        // $modelInstance->website = $request->input('website'); 
+        // $modelInstance->phone = $request->input('phone');
+        // $modelInstance->logo = $imageName;
+        // $modelInstance->address = $request->input('address');
+        // $modelInstance->logo = $imageName;
+        // $modelInstance->save();
+
+        // return redirect()->route('companytable');
+        //     // dd('ok');
+       
+    }
+    public function index(){
+        $users = User::get();
+        $securitytable= SecurityGuard::get();
+        return view('admin.security.securitytable',['securitytable'=>$securitytable,'users'=>$users]);
+    }
+    public function destroy($id) { 
+        $record = SecurityGuard::findOrFail($id); 
+        $record->delete();
+        return redirect()->route('securityTable');
+    }
+    public function edit($id) { 
+        $record = SecurityGuard::findOrFail($id);
+       
+        // $user = User::find($id);
+        // dd('ok');
+        return view('admin.security.securityEdit', compact('record')); 
+        
+    }
+    public function update(Request $request, $id) { 
+        $request->validate([
+            'name' => 'required', 
+            'email' => 'required', 
+            'phone' => ['required', 'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/'], 
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'address' => 'required', 
+        ]);
+
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('images'), $imageName);
+         // if ($request->file('image')->isValid()) {
+        //     $imageName = time().'.'.$request->image->extension();  
+        //     $request->image->move(public_path('images'), $imageName);
+    
+        //     return back()->with('success','You have successfully uploaded the image.');
+        // }
+        $security=SecurityGuard::findOrFail($id);
+        $data = array(
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'image' => $imageName,
+            'address' => $request->input('address'),    
+                
+        );
+        $security->update($data);
+        return redirect()->route('securityTable');
+    }
+}
