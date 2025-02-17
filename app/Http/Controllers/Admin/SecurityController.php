@@ -65,7 +65,9 @@ class SecurityController extends Controller
     }
     public function destroy($id) { 
         $record = SecurityGuard::findOrFail($id); 
+        $user = user::findOrFail($record->user_id); 
         $record->delete();
+        $user->delete();
         return redirect()->route('securityTable');
     }
     public function edit($id) { 
