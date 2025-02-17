@@ -67,7 +67,7 @@
                 <br>
                 <label for="image">Choose an image:</label> 
                 <input type="file" id="image" name="image" >
-                <img src="{{asset('images')}}/{{$record->user->image}}" class="user-image rounded-circle shadow" alt="User Image" width="100px" height="100px"
+                <img src="{{asset('images')}}/{{$record->user->image}}" class="user-image rounded-circle shadow" alt="User Image" width="100px" height="100px">
                 @error('image') 
                 <div class="text-danger">{{ $message }}</div> 
                 @enderror

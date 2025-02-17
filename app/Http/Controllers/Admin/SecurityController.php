@@ -19,7 +19,7 @@ class SecurityController extends Controller
         // dd($request->all());
         $request->validate([
         'name' => 'required', 
-        'email' => 'required', 
+        'email' => 'required',
         'phone' => ['required', 'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/'], 
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         'address' => 'required', 
@@ -28,15 +28,20 @@ class SecurityController extends Controller
         $imageName = time() . '.' . $request->image->extension();
         $request->image->move(public_path('images'), $imageName);
         $data = array(
-           
+            'role_id' => '3',
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-             'phone' => $request->input('phone'),
-            'image' => $imageName,
+            'password' => $request->input('password'),
+            'image' => $imageName,  
+        );
+        $user = User::create($data);
+        $data = array(
+            'user_id' => $user->id,
+            'phone' => $request->input('phone'),
             'address' => $request->input('address'),
-            
                 
         );
+            
         SecurityGuard::create($data);
         return redirect()->route('securityTable');
         // $modelInstance = new Placement(); 
@@ -53,9 +58,10 @@ class SecurityController extends Controller
        
     }
     public function index(){
-        $users = User::get();
+        // $users = User::get();
         $securitytable= SecurityGuard::get();
-        return view('admin.security.securitytable',['securitytable'=>$securitytable,'users'=>$users]);
+        return view('admin.security.securitytable',['securitytable'=>$securitytable]);
+        // return view('admin.security.securitytable',['securitytable'=>$securitytable,'users'=>$users]);
     }
     public function destroy($id) { 
         $record = SecurityGuard::findOrFail($id); 
@@ -81,22 +87,45 @@ class SecurityController extends Controller
 
         $imageName = time() . '.' . $request->image->extension();
         $request->image->move(public_path('images'), $imageName);
-         // if ($request->file('image')->isValid()) {
-        //     $imageName = time().'.'.$request->image->extension();  
-        //     $request->image->move(public_path('images'), $imageName);
-    
-        //     return back()->with('success','You have successfully uploaded the image.');
-        // }
         $security=SecurityGuard::findOrFail($id);
+        $user=user::findOrFail($security->user_id);
         $data = array(
+            'role_id' => '3',
             'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
+            // 'email' => $request->input('email'),
             'image' => $imageName,
-            'address' => $request->input('address'),    
-                
+
+            
         );
+        // $user->save();
+        $user->update($data);
+        
+        $data = array(
+            
+            'address' => $request->input('address'),    
+            'phone' => $request->input('phone'),  
+        );
+        // $staff->save();
         $security->update($data);
         return redirect()->route('securityTable');
     }
+       
+        
+        // $security=SecurityGuard::findOrFail($id);
+        // $data = array(
+        //     'name' => $request->input('name'),
+        //     'email' => $request->input('email'),
+        //     'phone' => $request->input('phone'),
+        //     'address' => $request->input('address'),    
+        // );
+
+        // if ($request->file('image')) {           
+        //     $imageName = time() . '.' . $request->image->extension();
+        //     $request->image->move(public_path('images'), $imageName);
+        //     $data['image'] = $imageName;
+        // }
+
+        // $security->update($data);
+        // return redirect()->route('securityTable');
+    
 }

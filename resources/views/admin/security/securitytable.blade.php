@@ -43,22 +43,28 @@
     
     @foreach($securitytable as $security)
     <tr>
-        <td><img src="{{asset('images')}}/{{$security->image}}" class="user-image rounded-circle shadow" alt="User Image" width="100px" height="100px"
-        /></td>
-        {{-- src="{{asset('dist/assets/img/user2-160x160.jpg')}}" --}}
-        {{-- <td><img src="{{ asset('images/' . $company->image) }}" width="100" ></td> --}}
-        <td>{{$security->name}}</td>
-        <td>{{$security->email}}</td>
-        <td>{{$security->phone}}</td>
-        <td>{{$security->address}}</td>
+       
         
-        {{-- <td><a  class="text-danger" href="{{ route('deleteSecurity', $security->id) }}" >  Delete</a>
-        </td> --}}
+       
+        <td><img src="{{asset('images')}}/{{$security->user->image}}" class="user-image rounded-circle shadow" alt="User Image" width="100px" height="100px"
+          /></td>
+          {{-- src="{{asset('dist/assets/img/user2-160x160.jpg')}}" --}}
+          {{-- <td><img src="{{ asset('images/' . $company->image) }}" width="100" ></td> --}}
+          <td>{{$security->user->name}}</td>
+          <td>{{$security->user->email}}</td>
+          <td>{{$security->phone}}</td>
+          <td>{{$security->address}}</td>
         <td><a  href="{{ route('securityEdit', $security->id) }}" >  Edit</a> </td>
        
         <td><a  class="text-danger" href="{{ route('securityDelete', $security->id) }}" >  Delete</a> </td>
        
-        
+        {{-- <td><img src="{{asset('images')}}/{{$security->image}}" class="user-image rounded-circle shadow" alt="User Image" width="100px" height="100px"
+          /></td>
+          
+          <td>{{$security->name}}</td>
+          <td>{{$security->email}}</td>
+          <td>{{$security->phone}}</td>
+          <td>{{$security->address}}</td> --}}
 
     </tr>
     @endforeach

@@ -35,19 +35,19 @@
          
             <div class="col-md-6 mb-3">
               <label for="name">Name:</label>
-              <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name" value="{{$record->name}}"/>
+              <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name" value="{{$record->user->name}}"/>
               @error('name') 
               <div class="text-danger">{{ $message }}</div> 
               @enderror
             </div>
             <div class="col-md-6 mb-3">
                 <label for="email">Email:</label>
-                <input type="email" name="email" class="form-control" placeholder="Email" value="{{$record->email}}"/>
-                <div class="input-group-text"></div>
+                <input type="email" name="email" class="form-control" placeholder="Email" value="{{$record->user->email}}"/>  
+                @error('email') 
+                <div class="text-danger">{{ $message }}</div> 
+                @enderror              
             </div>
-              @error('email') 
-              <div class="text-danger">{{ $message }}</div> 
-              @enderror
+             
             <div class="col-md-6 mb-3">
               <label for="phone">Phone:</label>
               <input type="text" id="phone"name="phone" class="form-control" placeholder="Enter phone" value="{{$record->phone}}"/>
@@ -55,13 +55,7 @@
               <div class="text-danger">{{ $message }}</div> 
               @enderror
             </div>
-            {{-- <div class="col-md-6 mb-3">
-              <label for="password">Password:</label>
-              <input type="text" id="password"name="password" class="form-control" placeholder="Enter password" value="{{$user->password}}"/>
-              @error('password') 
-                <div class="text-danger">{{ $message }}</div> 
-              @enderror
-          </div> --}}
+           
             <div class="col-md-12 mb-3">
                 <label for="address"> Address:</label>
                 <textarea id="address" class="form-control" name="address" rows="4" cols="50" >{{$record->address}}</textarea>
@@ -74,7 +68,7 @@
                 <br>
                 <label for="image">Choose an image:</label> 
                 <input type="file" id="image" name="image" >
-                <img src="{{asset('images')}}/{{$record->image}}" class="user-image rounded-circle shadow" alt="User Image" width="100px" height="100px"
+                <img src="{{asset('images')}}/{{$record->user->image}}" class="user-image rounded-circle shadow" alt="User Image" width="100px" height="100px">
                 @error('image') 
                 <div class="text-danger">{{ $message }}</div> 
                 @enderror

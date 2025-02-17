@@ -55,7 +55,13 @@
               <div class="text-danger">{{ $message }}</div> 
               @enderror
             </div>
-            
+            <div class="col-md-6 mb-3">
+              <label for="password">Password:</label>
+              <input type="text" id="password"name="password" class="form-control" placeholder="Enter password" />
+              @error('password') 
+                <div class="text-danger">{{ $message }}</div> 
+              @enderror
+          </div>
             <div class="col-md-12 mb-3">
                 <label for="address"> Address:</label>
                 <textarea id="address" class="form-control" name="address" rows="4" cols="50" ></textarea>

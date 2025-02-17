@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('security_guards', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('email')->unique();
+            $table->unsignedBigInteger('user_id');
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->string('image')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete ('cascade');
         });
     }
 
