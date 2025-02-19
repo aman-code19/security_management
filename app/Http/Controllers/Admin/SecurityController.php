@@ -19,7 +19,7 @@ class SecurityController extends Controller
         // dd($request->all());
         $request->validate([
         'name' => 'required', 
-        'email' => 'required',
+        'email' => 'required|email|unique:users,email',
         'phone' => ['required', 'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/'], 
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         'address' => 'required', 
@@ -81,9 +81,9 @@ class SecurityController extends Controller
     public function update(Request $request, $id) { 
         $request->validate([
             'name' => 'required', 
-            'email' => 'required', 
+            'email' => 'required|email|unique:users,email,' . $id, 
             'phone' => ['required', 'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/'], 
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => '|image|mimes:jpeg,png,jpg,gif|max:2048',
             'address' => 'required', 
         ]);
 
@@ -99,6 +99,11 @@ class SecurityController extends Controller
 
             
         );
+        // if ($request->file('image')) {           
+        //         $imageName = time() . '.' . $request->image->extension();
+        //         $request->image->move(public_path('images'), $imageName);
+        //         $data['image'] = $imageName;
+        //     }
         // $user->save();
         $user->update($data);
         
@@ -107,7 +112,7 @@ class SecurityController extends Controller
             'address' => $request->input('address'),    
             'phone' => $request->input('phone'),  
         );
-        // $staff->save();
+        
         $security->update($data);
         return redirect()->route('securityTable');
     }
