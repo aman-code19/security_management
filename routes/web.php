@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ClientController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
+Route::get("/",[LoginController::class,"login"])->name('login');
 Route::get("/login",[LoginController::class,"login"])->name('login');
 Route::post("/loginSubmit",[LoginController::class,"loginSubmit"]);
 Route::middleware(['auth'])->group(function () {

@@ -69,18 +69,16 @@ class SecurityController extends Controller
         
     }
     public function update(Request $request, $id) { 
+        $security=SecurityGuard::findOrFail($id);
+
         $request->validate([
             'name' => 'required', 
-            // 'email' => 'required', 
-            // 'email' => 'required|email|unique:users,email,' . $id, 
+            'email' => 'required|email|unique:users,email,' . $security->user_id,
             'phone' => ['required', 'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/'], 
             'image' => '|image|mimes:jpeg,png,jpg,gif|max:2048',
             'address' => 'required', 
         ]);
-
-        $imageName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('images'), $imageName);
-        $security=SecurityGuard::findOrFail($id);
+       
         $user=user::findOrFail($security->user_id);
         $data = array(
             'role_id' => '3',
