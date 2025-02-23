@@ -44,17 +44,7 @@ class SecurityController extends Controller
             
         SecurityGuard::create($data);
         return redirect()->route('securityTable');
-        // $modelInstance = new Placement(); 
-        // $modelInstance->name = $request->input('name'); 
-        // $modelInstance->website = $request->input('website'); 
-        // $modelInstance->phone = $request->input('phone');
-        // $modelInstance->logo = $imageName;
-        // $modelInstance->address = $request->input('address');
-        // $modelInstance->logo = $imageName;
-        // $modelInstance->save();
-
-        // return redirect()->route('companytable');
-        //     // dd('ok');
+       
        
     }
     public function index(){
@@ -81,7 +71,8 @@ class SecurityController extends Controller
     public function update(Request $request, $id) { 
         $request->validate([
             'name' => 'required', 
-            'email' => 'required|email|unique:users,email,' . $id, 
+            // 'email' => 'required', 
+            // 'email' => 'required|email|unique:users,email,' . $id, 
             'phone' => ['required', 'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/'], 
             'image' => '|image|mimes:jpeg,png,jpg,gif|max:2048',
             'address' => 'required', 
@@ -94,18 +85,19 @@ class SecurityController extends Controller
         $data = array(
             'role_id' => '3',
             'name' => $request->input('name'),
-            // 'email' => $request->input('email'),
-            'image' => $imageName,
+            'email' => $request->input('email'),
+            // 'image' => $imageName,
 
             
         );
-        // if ($request->file('image')) {           
-        //         $imageName = time() . '.' . $request->image->extension();
-        //         $request->image->move(public_path('images'), $imageName);
-        //         $data['image'] = $imageName;
-        //     }
+        if ($request->file('image')) {           
+                $imageName = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('images'), $imageName);
+                $data['image'] = $imageName;
+            }
         // $user->save();
         $user->update($data);
+        
         
         $data = array(
             
@@ -136,3 +128,14 @@ class SecurityController extends Controller
         // return redirect()->route('securityTable');
     
 }
+ // $modelInstance = new Placement(); 
+        // $modelInstance->name = $request->input('name'); 
+        // $modelInstance->website = $request->input('website'); 
+        // $modelInstance->phone = $request->input('phone');
+        // $modelInstance->logo = $imageName;
+        // $modelInstance->address = $request->input('address');
+        // $modelInstance->logo = $imageName;
+        // $modelInstance->save();
+
+        // return redirect()->route('companytable');
+        //     // dd('ok');
